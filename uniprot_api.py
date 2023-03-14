@@ -1,8 +1,7 @@
 import requests
 import pandas as pd
 
-protein_db = pd.DataFrame([["", "", "", "", ""]], columns=["UniProtKB ID", "UniProtKB Name", "Organism", "Binding Affinity", "Binding Sites"])
-# TODO: add amino acid sequence in DataFrame, and download PDBBind data from 2019-2021
+protein_db = pd.DataFrame([["", "", "", "", "", ""]], columns=["UniProtKB ID", "UniProtKB Name", "Organism", "Binding Affinity", "Binding Sites", "Amino Acid Sequence"])
 
 
 def get_protein(uniprotkb_id, binding_affinity):
@@ -17,7 +16,7 @@ def get_protein(uniprotkb_id, binding_affinity):
     for feature in req.json()['features']:
         if feature['type'] == "Binding site":
             features_str += (str(feature['location']['start']['value']) + "," + str(feature['location']['end']['value'])) + ';'
-    protein_db = pd.concat([protein_db, pd.DataFrame([[uniprotkb_id, req.json()['uniProtkbId'], req.json()['organism']['scientificName'], binding_affinity, features_str]], columns=["UniProtKB ID", "UniProtKB Name", "Organism", "Binding Affinity", "Binding Sites"])])
+    protein_db = pd.concat([protein_db, pd.DataFrame([[uniprotkb_id, req.json()['uniProtkbId'], req.json()['organism']['scientificName'], binding_affinity, features_str, req.json()['sequence']['value']]], columns=["UniProtKB ID", "UniProtKB Name", "Organism", "Binding Affinity", "Binding Sites", "Amino Acid Sequence"])])
 
 
 def read_pdbbind_complexes(file_name):
