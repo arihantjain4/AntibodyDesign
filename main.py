@@ -1,7 +1,7 @@
 import numpy as np
 from tensorflow import keras
 from keras.models import Sequential
-from keras.layers import LSTM
+from keras.layers import LSTM # TODO: change to GRU
 from attention_decoder import AttentionDecoder
 from random import randint
 
