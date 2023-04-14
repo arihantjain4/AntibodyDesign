@@ -1,7 +1,7 @@
 import numpy as np
 from tensorflow import keras
 from keras.models import Sequential
-from keras.layers import LSTM # TODO: change to GRU
+from keras.layers import GRU # TODO: change to GRU
 from attention_decoder import AttentionDecoder
 from random import randint
 
@@ -25,7 +25,7 @@ def one_hot_decode(encoded_seq):
     return [np.argmax(vector) for vector in encoded_seq]
 
 
-# prepare data for the LSTM
+# prepare data for the GRU
 def get_pair(n_in, n_out, cardinality):
     # generate random sequence
     sequence_in = generate_sequence(n_in, cardinality)
@@ -47,16 +47,16 @@ def run():
 
     # define model
     model = Sequential()
-    model.add(LSTM(150, input_shape=(n_timesteps_in, n_features), return_sequences=True))
+    model.add(GRU(150, input_shape=(n_timesteps_in, n_features), return_sequences=True))
     model.add(AttentionDecoder(150, n_features))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    # train LSTM
+    # train GRU
     for epoch in range(5000):
         # generate new random sequence
         X, y = get_pair(n_timesteps_in, n_timesteps_out, n_features)
         # fit model for one epoch on this sequence
         model.fit(X, y, epochs=1, verbose=2)
-    # evaluate LSTM
+    # evaluate GRU
     total, correct = 100, 0
     for _ in range(total):
         X, y = get_pair(n_timesteps_in, n_timesteps_out, n_features)
