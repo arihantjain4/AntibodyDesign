@@ -4,12 +4,8 @@ from keras.models import Sequential
 from keras.layers import GRU 
 from random import randint
 
-# generate a sequence of random integers
-def generate_sequence(length, n_unique):
-    return [randint(0, n_unique - 1) for _ in range(length)]
 
 
-# one hot encode sequence
 def encode_vector(sequence, n_unique):
     encoding = list()
     for value in sequence:
@@ -22,6 +18,8 @@ def encode_vector(sequence, n_unique):
 def decode_vector(encoded_seq):
     return [np.argmax(vector) for vector in encoded_seq]
 
+def generate_sequence(length, n_unique):
+    return aaseq[n_unique], length
 
 # prepare data for the GRU
 def get_pair(n_in, n_out, cardinality):
